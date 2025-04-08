@@ -1,0 +1,298 @@
+
+<?php
+
+//To Handle Session Variables on This Page
+session_start();
+
+//If user Not logged in then redirect them back to homepage. 
+if(empty($_SESSION['id_company'])) {
+  header("Location: ../index.php");
+  exit();
+}
+
+require_once("../db.php");
+
+$id = isset($_SESSION['id_company']) ? $_SESSION['id_company'] : $_SESSION['id_user'];
+$userType = isset($_SESSION['id_company']) ? 'company' : 'user';
+
+// Query to fetch the mailbox entry based on the provided ID
+$sql = "SELECT * FROM mailbox WHERE id_mailbox='$_GET[id_mail]' AND (id_fromuser='$id' OR id_touser='$id')";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    
+    if ($row['fromuser'] == "user") {
+        // Fetch user and company details when the message is from a user
+        $sql1 = "SELECT * FROM users WHERE id_user='$row[id_fromuser]'";
+        $result1 = $conn->query($sql1);
+        if ($result1->num_rows > 0) {
+            $rowUser = $result1->fetch_assoc();
+        }
+
+        $sql2 = "SELECT * FROM company WHERE id_company='$row[id_touser]'";
+        $result2 = $conn->query($sql2);
+        if ($result2->num_rows > 0) {
+            $rowCompany = $result2->fetch_assoc();
+        }
+    } else {
+        // Fetch user and company details when the message is from a company
+        $sql1 = "SELECT * FROM users WHERE id_user='$row[id_touser]'";
+        $result1 = $conn->query($sql1);
+        if ($result1->num_rows > 0) {
+            $rowUser = $result1->fetch_assoc();
+        }
+
+        $sql2 = "SELECT * FROM company WHERE id_company='$row[id_fromuser]'";
+        $result2 = $conn->query($sql2);
+        if ($result2->num_rows > 0) {
+            $rowCompany = $result2->fetch_assoc();
+        }
+    }
+}
+
+// Determine recipient ID based on the current user type and original message direction
+if ($userType == 'company') {
+  // If the current user is a company, the reply should go to the user
+  $recipientId = $row['id_touser']; // id_touser is the user ID in this case
+} else {
+  // If the current user is a user, the reply should go to the company
+  $recipientId = $row['id_fromuser']; // id_fromuser is the company ID in this case
+}
+
+// Check if $rowCompany is set and contains 'companyname'
+$companyName = isset($rowCompany['companyname']) ? $rowCompany['companyname'] : 'Unknown Company';
+
+// Check if $rowUser is set and contains 'firstname'
+$userName = isset($rowUser['firstname']) ? $rowUser['firstname'] : 'Unknown User';
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Read Mail</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <!-- Bootstrap 3.3.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../css/_all-skins.min.css">
+  <!-- Custom -->
+  <link rel="stylesheet" href="../css/custom.css">
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+  <script src="../js/tinymce/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'#description', height: 150 });</script>
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Google Font -->
+   <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  <style>
+
+    .logo img {
+      height: 50px;
+      width: auto;
+    }
+</style>
+</style>
+</head>
+<body class="hold-transition skin-green sidebar-mini">
+<div class="wrapper">
+
+  <header class="main-header">
+
+<!-- Logo -->
+  <a href="home.php" class="logo logo-bg">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini">
+          <b>J</b>P
+      </span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg">
+        <img src="../img/logo.jpg" alt="Jobseek Logo">
+      </span>
+  </a>
+
+<!-- Header Navbar: style can be found in header.less -->
+<nav class="navbar navbar-static-top">
+  <!-- Navbar Right Menu -->
+  <div class="navbar-custom-menu">
+    <ul class="nav navbar-nav">
+      
+      <?php include 'notifications.php'; ?>            
+    </ul>
+  </div>
+</nav>
+</header>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="margin-left: 0px;">
+
+    <section id="candidates" class="content-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="box box-solid">
+              <div class="box-header with-border">
+                <h3 class="box-title">Welcome <b><?php echo $_SESSION['name']; ?></b></h3>
+              </div>
+              <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                  <li><a href="index.php"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                  <li><a href="edit-company.php"><i class="fa fa-tv"></i> My Company</a></li>
+                  <li><a href="create-job-post.php"><i class="fa fa-file-o"></i> Create Job Post</a></li>
+                  <li><a href="my-job-post.php"><i class="fa fa-list"></i> My Job Post</a></li>
+                  <li><a href="job-applications.php"><i class="fa fa-file-o"></i> Job Application</a></li>
+                  <li class="active"><a href="mailbox.php"><i class="fa fa-envelope"></i> Mailbox</a></li>
+                  <li><a href="settings.php"><i class="fa fa-gear"></i> Settings</a></li>
+                  <li><a href="company-feedback.php"><i class="fa fa-book"></i> Feedback</a></li>
+                  <li><a href="resume-database.php"><i class="fa fa-user"></i> Resume Database</a></li>
+                  <li><a href="../logout.php"><i class="fa fa-arrow-circle-o-right"></i> Logout</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9 bg-white padding-2">
+          <section class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <a href="mailbox.php" class="btn btn-default"><i class="fa fa-arrow-circle-left"></i> Back</a>
+                <div class="box box-primary">
+                  <!-- /.box-header -->
+                  <div class="box-body no-padding">
+                    <div class="mailbox-read-info">
+                      <h3><?php echo $row['subject']; ?></h3>
+                      <h5>From: <?php if($row['fromuser'] == "user") { echo $rowUser['firstname']; } else { echo $rowCompany['companyname']; } ?>
+                        <span class="mailbox-read-time pull-right"><?php echo date("d-M-Y h:i a", strtotime($row['createdAt'])); ?></span></h5>
+                    </div>
+                    <div class="mailbox-read-message">
+                      <?php echo stripcslashes($row['message']); ?>
+                    </div>
+                    <!-- /.mailbox-read-message -->
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+
+                <?php
+
+                $sqlReply = "SELECT * FROM reply_mailbox WHERE id_mailbox='$_GET[id_mail]'";
+                $resultReply = $conn->query($sqlReply);
+                if($resultReply->num_rows > 0) {
+                  while($rowReply =  $resultReply->fetch_assoc()) {
+                    ?>
+                  <div class="box box-primary">
+                    <div class="box-body no-padding">
+                      <div class="mailbox-read-info">
+                        <h3>Reply Message</h3>
+                        <h5>From: <?php if($rowReply['usertype'] == "company") { echo $rowCompany['companyname']; } else { echo $rowUser['firstname']; } ?>
+                          <span class="mailbox-read-time pull-right"><?php echo date("d-M-Y h:i a", strtotime($rowReply['createdAt'])); ?></span></h5>
+                      </div>
+                      <div class="mailbox-read-message">
+                        <?php echo stripcslashes($rowReply['message']); ?>
+                      </div>
+                    </div>
+                  </div>
+                    <?php
+                  }
+                }
+                ?>
+                
+
+                <div class="box box-primary">
+                  <!-- /.box-header -->
+                  <div class="box-body no-padding">
+                    <div class="mailbox-read-info">
+                      <h3>Send Reply</h3>
+                    </div>
+                    <div class="mailbox-read-message">
+                      <form action="reply-mailbox.php" method="post" onsubmit="return validateForm()">
+                        <div class="form-group">
+                          <textarea class="form-control input-lg" id="description" name="description" placeholder="Type your reply here..."></textarea>
+                          <input type="hidden" name="id_mail" value="<?php echo $_GET['id_mail']; ?>">
+                          <input type="hidden" name="to" value="<?php echo $recipientId; ?>">
+                        </div>
+                        <div class="form-group">
+                          <div class="pull-right">
+                            <button type="submit" class="btn btn-flat btn-success">Reply</button>
+                          </div>
+                        </div>
+                            <a href="mailbox.php" class="btn btn-default" style="text-align: right;"><i class="fa fa-times"></i> Discard</a>
+                        
+                      </form>
+                    </div>
+                    <!-- /.mailbox-read-message -->
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+
+
+              </div>
+              <!-- /.col -->
+            </div>
+            <!-- /.row -->
+          </section> </br>
+
+          </div>
+        </div>
+      </div>
+    </section> </br>
+
+              </br>
+
+    
+
+  </div>
+  <!-- /.content-wrapper -->
+
+
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../js/adminlte.min.js"></script>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+<script>
+  $(function () {
+    $('#example1').DataTable();
+  })
+
+  function validateForm() {
+  // Get the content from the TinyMCE editor
+  var content = tinymce.get('description').getContent({ format: 'text' }).trim();
+  
+  // Check if the content is empty
+  if (content === '') {
+    alert('Please enter a message before submitting.');
+    return false;
+  }
+  
+  return true;
+}
+</script>
+
+</body>
+</html>
+<?php
+include('footer.php');
+?>
