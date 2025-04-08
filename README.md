@@ -1,4 +1,4 @@
-gJobseek - By Mohammad Ahsan Junaid & Abdulrehman
+Jobseek - By Mohammad Ahsan Junaid & Abdulrehman
 		BS(CIS) 2019 -2023
 
 To run the Application using XAMPP, you can follow these steps:
@@ -92,4 +92,3 @@ Password: 123456 ( All Password are encrpyted through code so you CANNOT change 
 
 Username: admin
 Password: 123456 ( Password is not encrpyted from code so you CAN change directly from database.)
->>>>>>> 858ed19 (Initial Commit)
