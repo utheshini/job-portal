@@ -1,14 +1,13 @@
 <?php
- 
-/*
-	* session_start()  --> Required To do anything related to sessions. Best to put on top before any other code.
-	* session_unset() -->  function frees all session variables currently registered like $_Session['id_user']
-	* session_destroy() --> Destroys all data registered to a session. Basically destory all session.
-*/
-
+// Start session
 session_start();
+
+// Remove all session variables
 session_unset();
+
+// Destroy the session entirely
 session_destroy();
 
+// Redirect the user to the homepage (index.php)
 header("Location: index.php");
 exit();

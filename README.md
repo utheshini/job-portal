@@ -1,94 +1,129 @@
-Jobseek - By Mohammad Ahsan Junaid & Abdulrehman
-		BS(CIS) 2019 -2023
+# 🧑‍💼 Job Portal System
 
-To run the Application using XAMPP, you can follow these steps:
+A web-based platform designed to connect job seekers and employers. This system allows users to register, search and apply for jobs, while employers can post job listings and manage applications. Administrator have control over platform content, users, and feedback.
 
------------------------------------------------------------------------------------------------------
-		      Install XAMPP 
------------------------------------------------------------------------------------------------------
-1.Download and install XAMPP from the official website (https://www.apachefriends.org/index.html) based on your operating system. 
+---
 
-2.Follow the installation instructions provided for your specific platform.
+## 🚀 Features
 
+### 👤 Job Seeker
+- User registration and login
+- Profile management with resume upload
+- Search and filter jobs
+- Apply for jobs
+- Save or delete saved jobs
+- View application history and status
+- Message employers
+- Send feedback to the admin
 
------------------------------------------------------------------------------------------------------
-		Move the project files 
------------------------------------------------------------------------------------------------------
-1.Navigate to the XAMPP installation directory on your machine. 
+### 🏢 Employer
+- Employer registration and login
+- Create, edit, and manage job postings
+- View applicant details and resumes
+- Select/reject candidates
+- Communicate with applicants
 
-2.In the XAMPP installation folder, locate the "htdocs" directory. 
+### 🛠️ Administrator
+- Manage job postings, job seekers, and employers
+- Approve/reject employer accounts
+- Manage user feedback
+- Generate reports
 
-3.Move the entire project folder or the extracted contents into the "htdocs" directory.
+---
 
+## 💻 Technologies Used
 
+### Frontend
+- HTML5, CSS3, JavaScript
+- Bootstrap
+- Font Awesome
+- Ionicons
+- AdminLTE
 
------------------------------------------------------------------------------------------------------
-		Configure the database
------------------------------------------------------------------------------------------------------
-1.Open a web browser and go to `http://localhost/phpmyadmin` to access the phpMyAdmin interface provided by XAMPP.
+### Backend
+- PHP
 
+### Database
+- MySQL
 
------------------------------------------------------------------------------------------------------
-		   Create a database
------------------------------------------------------------------------------------------------------
-1.In phpMyAdmin, click on the "Databases" tab and enter a name for your new database. 
+### Server
+- Apache (via XAMPP)
 
-2.Click the "Create" button to create the database.
+---
 
+## 📂 Folder Structure
 
------------------------------------------------------------------------------------------------------
-	             Import the database schema
------------------------------------------------------------------------------------------------------
-1.With the newly created database selected, click on the "Import" tab in phpMyAdmin. 
+job-portal/
+├── admin/
+├── candidate/
+├── company/
+├── includes/
+├── css/
+├── js/
+├── img/
+├── shared/
+├── uploads/
+├── vendor/
+├── database/
+├── index.php
+├── login.php
+├── sign_up.php
+├── jobs.php
+├── logout.php
+├── register_company.php
+├── register_candidate.php
+├── login_company.php
+├── login_candidate.php
+├── add_company.php
+├── add_candidate.php
+├── check_company_login.php
+├── check_candidate_login.php
+├── view_company.php
+├── view_job.php
+├── verify.php
+└── README.md
 
-2.Click on the "Choose File" button and navigate to the project folder you moved to the "htdocs" directory. 
+---
 
-3.Look for a file named "jobportal.sql" within the project folder, select it, and click the "Go" button to import the database schema.
+## ⚙️ Installation
 
+### Requirements
+- XAMPP / WAMP or any Apache-MySQL-PHP environment
+- Web browser
 
------------------------------------------------------------------------------------------------------
-	          Configure database connection 
------------------------------------------------------------------------------------------------------
-1.In the project folder that you moved to the "htdocs" directory, locate a file named "db.php". 
+### Steps
 
-2.Open this file in a text editor.
+1. **Setup the Database**
+- Open phpMyAdmin
+- Create a new database named job_portal
+- Import the SQL dump file located in the /database/ directory
 
+2. **Configure the Project**
+- Place the project folder inside your server directory (e.g., htdocs/ in XAMPP)
+- Inside the includes/ folder, create a file named db.php and add the database credentials to match your environment
 
------------------------------------------------------------------------------------------------------
-	        Modify database connection details
------------------------------------------------------------------------------------------------------
-1.Within the "db.php" file, you should find variables representing the database connection details. 
+3. **Run the Application**
+http://localhost/job-portal/
 
-2.Adjust the values of these variables to match your XAMPP setup, variables to modify currently are:
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "jobportal";
+---
 
+## 📄 License
 
------------------------------------------------------------------------------------------------------
-		       Start XAMPP
------------------------------------------------------------------------------------------------------
-1.Open the XAMPP control panel.
+This project is licensed under a **Custom Academic License**.  
+You may **view and read** the source code for educational and evaluation purposes.  
+However, you may **not reuse, modify, copy, or redistribute** any part of it without written permission.
 
-2.Start the Apache and MySQL services.
+© 2025 Utheshni Uthayananth. All rights reserved.
 
+---
 
------------------------------------------------------------------------------------------------------
-		Access the job portal 
------------------------------------------------------------------------------------------------------
-1.Open a web browser and enter the following URL: `http://localhost/job-portal`.
+## 🙋‍♀️ About Me
+I’m a recent Bachelor of Information Technology graduate, passionate about web development. This is my final year project to showcase my skills in web development.
 
-2.Now you login as candidate with following details
-Email: test1@user.com
-Password: 123456 ( All Password are encrpyted through code so you CANNOT change password directly from database.)
+Thank you for checking out this project! If you found it useful, feel free to give it a ⭐!
 
-3.Now you login as employer with following details
+---
 
-Email: test1@employer.com
-Password: 123456 ( All Password are encrpyted through code so you CANNOT change password directly from database.)
+## 📬 Contact
 
-4.Now you login as Admin with following details
-
-Username: admin
-Password: 123456 ( Password is not encrpyted from code so you CAN change directly from database.)
+Email: utheshni@gmail.com

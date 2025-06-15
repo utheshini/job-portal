@@ -8,7 +8,7 @@ if (empty($_SESSION['id_company'])) {
 
 require_once("../db.php");
 
-// Validate and sanitize input parameters
+// Validate GET parameters
 if (!isset($_GET['id'], $_GET['id_jobpost']) || 
     !filter_var($_GET['id'], FILTER_VALIDATE_INT) || 
     !filter_var($_GET['id_jobpost'], FILTER_VALIDATE_INT)) {
@@ -20,7 +20,7 @@ $id_company = $_SESSION['id_company'];
 $id_candidate = (int) $_GET['id'];
 $id_jobpost = (int) $_GET['id_jobpost'];
 
-// Check if the application exists for this company, user, and job post
+// Check if application exists
 $checkStmt = $conn->prepare("SELECT application_id FROM applications WHERE company_id = ? AND candidate_id = ? AND job_id = ?");
 $checkStmt->bind_param("iii", $id_company, $id_candidate, $id_jobpost);
 $checkStmt->execute();
@@ -32,8 +32,8 @@ if ($checkResult->num_rows === 0) {
 }
 $checkStmt->close();
 
-// Update application status to 'rejected'
-$updateStmt = $conn->prepare("UPDATE applications SET status = 'rejected' WHERE company_id = ? AND candidate_id = ? AND job_id = ?");
+// Update status to 'selected'
+$updateStmt = $conn->prepare("UPDATE applications SET status = 'selected' WHERE company_id = ? AND candidate_id = ? AND job_id = ?");
 $updateStmt->bind_param("iii", $id_company, $id_candidate, $id_jobpost);
 
 if ($updateStmt->execute()) {
