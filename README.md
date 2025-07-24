@@ -51,40 +51,6 @@ A web-based platform designed to connect job seekers and employers. This system 
 
 ---
 
-## 📂 Folder Structure
-
-job-portal/
-├── admin/
-├── candidate/
-├── company/
-├── includes/
-├── css/
-├── js/
-├── img/
-├── shared/
-├── uploads/
-├── vendor/
-├── database/
-├── index.php
-├── login.php
-├── sign_up.php
-├── jobs.php
-├── logout.php
-├── register_company.php
-├── register_candidate.php
-├── login_company.php
-├── login_candidate.php
-├── add_company.php
-├── add_candidate.php
-├── check_company_login.php
-├── check_candidate_login.php
-├── view_company.php
-├── view_job.php
-├── verify.php
-└── README.md
-
----
-
 ## ⚙️ Installation
 
 ### Requirements
