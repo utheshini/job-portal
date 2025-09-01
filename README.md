@@ -79,17 +79,21 @@ This project is licensed under a **Custom Academic License**.
 You may **view and read** the source code for educational and evaluation purposes.  
 However, you may **not reuse, modify, copy, or redistribute** any part of it without written permission.
 
-© 2025 Utheshni Uthayananth. All rights reserved.
+© 2025 Utheshini Uthayananth. All rights reserved.
 
 ---
 
 ## 🙋‍♀️ About Me
-I’m a recent Bachelor of Information Technology graduate, passionate about web development. This is my final year project to showcase my skills in web development.
 
-Thank you for checking out this project! If you found it useful, feel free to give it a ⭐!
+I’m a recent Bachelor of Information Technology graduate, passionate about web development. This is my final year full stack project to showcase my skills in web development.
 
 ---
 
 ## 📬 Contact
 
-Email: utheshni@gmail.com
+- **Email:** utheshini10@gmail.com  
+- **LinkedIn:** [LinkedIn](https://linkedin.com/in/utheshini-uthayananth)  
+- **GitHub:**  [GitHub](https://github.com/utheshini)
+
+---
+✨ Thanks for visiting my project! Feel free to connect with me on LinkedIn.
